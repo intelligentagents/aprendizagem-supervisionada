@@ -1,0 +1,11 @@
+City,Age,Salary,Sex,Acquired
+Paraiba,42,6500,M,No
+Sao Paulo,21,4300,F,Yes
+Brasilia,28,4900,F,No
+Recife,35,5400,F,No
+Maceio,38,,M,Yes
+Sao Paulo,33,5200,M,Yes
+Belo Horizonte,,4700,F,No
+Sao Paulo,45,7100,M,Yes
+Paraiba,51,7500,F,No
+Fortaleza,39,6000,M,Yes
