@@ -9,10 +9,13 @@ Created on Fri Nov  1 14:27:30 2019
 # Importing the libraries
 from __future__ import absolute_import
 import pandas as pd
+import numpy as np
 from utils import k_fold_cv, feature_scaling, accuracy, precision, recall, informedness, markdness
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
+from sklearn.metrics import roc_curve, roc_auc_score
+from scikitplot.metrics import plot_roc
 
 
 # Importando o Dataset
@@ -86,6 +89,27 @@ informedness(tp, fp, fn, tn)
 # Calculando os valores do markdness
 markdness(tp, fp, fn, tn)
 
+# Definindo os valores para calculo do ROC-AUC
+# Valores reais (ground truth)
+y_true = np.array([1, 1, 2, 2])
+
+#Probabilidade de estimar as classes positivas:
+y_scores = np.array([0.1, 0.4, 0.35, 0.8])
+
+# A probabilidade de predição de cada classe retornada por um classificador:
+y_probas = np.array([[1, 0],
+                     [1, 0],
+                     [1, 0],
+                     [0, 1]])
+
+# Calculando os valores da curva AUC (Area Under Curve)
+roc_auc_score(y_true, y_scores)
+
+# Calculando os pontos da curva ROC (Receiver Operating Characteristic):
+fpr, tpr, thresholds = roc_curve(y_true, y_scores, pos_label=2)
+
+# Plotando os pontos da curva ROC:
+plot_roc(y_true, y_probas)
 
 # Usando a função para definir os indices de uma validação cruzada com 5 folds.
 k_fold_cv(list(df.index.values))
