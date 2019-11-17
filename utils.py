@@ -14,6 +14,7 @@ from sklearn.preprocessing import StandardScaler
 import seaborn as sns; sns.set()
 
 
+
 def k_fold_cv(indexes, k = 5, seed = 42):
     
     """Função que retorna os indices do validação cruzada em k folds
@@ -43,8 +44,7 @@ def k_fold_cv(indexes, k = 5, seed = 42):
             if subset != test:
                 train.append(subset)
         kfolds.append((train,test))
-        
-    return ("Indices de Treinamento:", train, "Indices de Testes:", test)
+        print ("Indices de Treinamento:", train, "Indices de Testes:", test)
 
 
 # Função que calcula os reais positivos
