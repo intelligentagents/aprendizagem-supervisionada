@@ -16,13 +16,14 @@ from sklearn.model_selection import cross_val_predict
 from sklearn.model_selection import train_test_split
 
 
-#Importanto os dados
+# Importanto os dados
+# Fonte: https://github.com/minerandodados/mdrepo
 df = pd.read_csv('data/tweets.csv', encoding ='utf-8')
 
 df.head(5)
 
 df.describe()
-#Visualizando o dataset
+# Visualizando o dataset
 sns.countplot(x= 'Classificacao',data = df)
 
 # Por img no NOtebook
@@ -38,10 +39,10 @@ vectorizer = CountVectorizer(ngram_range=(1,2))
 # Converter o texto em uma matriz de contagens de tokens
 freq_tweets = vectorizer.fit_transform(X)
 
-#Dividindo os dados:
+# Dividindo os dados:
 X_train, X_test, y_train, y_test = train_test_split(freq_tweets, y, test_size=0.20, random_state=42)
 
-#Create the model
+# Create the model
 model = MultinomialNB()
 model.fit(X_train, y_train)
 
