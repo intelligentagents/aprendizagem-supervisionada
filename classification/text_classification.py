@@ -26,10 +26,8 @@ df.describe()
 # Visualizando o dataset
 sns.countplot(x= 'Classificacao',data = df)
 
-# Por img no NOtebook
+# Por img no Notebook
 # https://miro.medium.com/max/1726/1*CfcTH_TIWNqVDDWI94aK5g.png
-
-
 X = df['Text'].values
 y = df['Classificacao'].values
 

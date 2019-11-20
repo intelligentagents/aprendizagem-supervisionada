@@ -15,7 +15,7 @@ import seaborn as sns; sns.set()
 
 
 
-def k_fold_cv(indexes, k = 5, seed = 42):
+def get_folds(indexes, k = 5, seed = 42):
     
     """Função que retorna os indices do validação cruzada em k folds
 
@@ -42,9 +42,9 @@ def k_fold_cv(indexes, k = 5, seed = 42):
         train = []
         for subset in subsets:
             if subset != test:
-                train.append(subset)
-        kfolds.append((train,test))
-        print ("Indices de Treinamento:", train, "Indices de Testes:", test)
+                train.extend(subset)
+        kfolds.append((train, test))
+    return kfolds
 
 
 # Função que calcula os reais positivos
@@ -151,5 +151,16 @@ def plot_results_reg(X, y, regressor, title):
     plt.show()
     
     
-    
+def verifica_conjuntos_cv(df, conjuntos):
+    for i in range(len(conjuntos)):
+        ind_treino = conjuntos[i][0]
+        ind_teste = conjuntos[i][1]
+        
+        print("Conjunto {}:".format(i + 1))
+        
+        print("Treino:")
+        print(df.iloc[ind_treino])
+        
+        print("Teste:")
+        print(df.iloc[ind_teste])
      

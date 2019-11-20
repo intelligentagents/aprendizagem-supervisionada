@@ -10,7 +10,7 @@ Created on Fri Nov  1 14:27:30 2019
 from __future__ import absolute_import
 import pandas as pd
 import numpy as np
-from utils import k_fold_cv, feature_scaling, accuracy, precision, recall, informedness, markdness
+from utils import get_folds, feature_scaling, accuracy, precision, recall, informedness, markdness
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
@@ -111,8 +111,10 @@ fpr, tpr, thresholds = roc_curve(y_true, y_scores, pos_label=2)
 # Plotando os pontos da curva ROC:
 plot_roc(y_true, y_probas)
 
+        
 # Usando a função para definir os indices de uma validação cruzada com 5 folds.
-k_fold_cv(list(df.index.values))
+for fold in get_folds(list(df.index.values)):
+     print("Indices de Treinamento:", fold[0], "Indices de Testes:", fold[1])
  
 
 # Calidação cruzada com 5 folds usando o sklearn
@@ -125,3 +127,4 @@ for train_index, test_index in kf.split(X):
 
 # Dividindo o dataset no conjunto de treinamento (80%) e testes (20%)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+
