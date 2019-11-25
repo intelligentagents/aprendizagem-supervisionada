@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Nov  2 22:04:07 2019
+Created on Mon Nov 25 15:51:14 2019
 
+@author: Jairo Souza
 """
 
 # Importando os pacotes
@@ -11,26 +12,25 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+
+from sklearn.datasets import load_breast_cancer
 
 # Importando os dados
-df = pd.read_csv('data/titanic.csv')
+df = load_breast_cancer()
 
 # Selecionando uma amostragem dos dados para melhor visualização
-df = df.sample(n=100, random_state=0)
+# df = df.sample(n=100, random_state=0)
 
-# Descrevendo o dataset
-df.describe()
+#Visualizando as features do dataset:
+df.feature_names
 
-# Visualizando o dataset
-df.head(5)
-
-# Preenchendo os valores númericos nulos (NA) com a mediana.
-df = df.fillna(df.median())
+#Visualizando dados:
+df.data[0:5, ]
 
 # Definindo as variáveis dependentes/independentes.
-X = df.iloc[:, [5, 9]].values
-y = df.iloc[:, 1].values
+X = df.data
+y = df.target
 
 # Criando os subconjuntos de treinamento e testes
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
@@ -39,8 +39,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 X_train = feature_scaling(X_train)
 X_test = feature_scaling(X_test)
 
-# Treinando o modelo KNN com o Conjunto de Treinamento
-classifier = KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski', p = 2)
+# Treinando o modelo de SVC com o Conjunto de Treinamento
+classifier = SVC(kernel = 'rbf', random_state = 0)
 classifier.fit(X_train, y_train)
 
 # Prevendo os resultados do modelo criado com o conjunto de testes
@@ -50,15 +50,8 @@ y_pred = classifier.predict(X_test)
 tn, fp, fn, tp = confusion_matrix(y_test, y_pred).ravel()
 
 # Visualizando a métrica de acurácia através das funções criandas e da bibilioteca sklearn
-accuracy(tp, fp, fn, tn)
+# accuracy(tp, fp, fn, tn)
 classifier.score(X_test, y_test)
 
 # Exibindo o f-measure
 f_measure(tp, fp, fn)
-f1_score(y_test, y_pred)  
-
-# Exibindo os resultados do conjunto de treinamento
-plot_results_class(X_train, y_train, classifier, 'KNN (Conj. de Treinamento)')
-
-# Exibindo os resultados do conjunto de testes
-plot_results_class(X_test, y_test, classifier, 'KNN (Conj. de Testes)')

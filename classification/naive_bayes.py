@@ -39,7 +39,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 X_train = feature_scaling(X_train)
 X_test = feature_scaling(X_test)
 
-# Treinando o modelo de Árvore de Decisão com o Conjunto de Treinamento
+# Treinando o modelo de Naive Bayes com o Conjunto de Treinamento
 classifier = GaussianNB()
 classifier.fit(X_train, y_train)
 
