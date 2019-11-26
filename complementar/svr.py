@@ -13,22 +13,31 @@ from sklearn.model_selection import train_test_split
 from sklearn.svm import SVR
 from utils import plot_results_reg, feature_scaling
 
-from sklearn.datasets import load_diabetes
 
-# Importando os dados
-# Dez variáveis  relacionadas a  idade, sexo, índice de massa corporal, pressão arterial média 
-#e seis medidas séricas foram obtidas para cada um dos  442 pacientes com diabetes,
-df = load_diabetes()
+# Importando o dataset do nosso estudo. O ojetivo é prever o consumo médio de carros através da coluna mpg (galões de combustível por milhas)
+# Portanto, queremos prever o grau de economia de cada modelo de carro através de atributos como: número de cilindros, peso, potência, etc..
+df = pd.read_csv('data/cars.csv', sep = ";")
 
-#Visualizando as features do dataset:
-df.feature_names
+# Exporando o dataset
+df.info()
+
+# Visualizando o sumário das colunas numéricas do dataset
+df.describe()
 
 #Visualizando dados:
-df.data[0:5, ]
+df.head(10)
+
+# Analisando se algumas colunas do atribuito horsepower contém valores nulos:
+df[df.isnull().values.any(axis=1)]
+
+# Preechendo os valores nulas com a mediana
+df = df.fillna(df.median())
+# Exibindo algumas das linhas tinham valores nulos via indíces:
+df.iloc[[32,126,374],]
 
 # Definindo as variáveis dependentes/independentes.
-X = df.data
-y = df.target
+X = df.iloc[:,1:8]
+y = df.iloc[:,0]
 
 # Dividindo o dataset em conjunto de treinamento e testes
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
