@@ -2,12 +2,12 @@
 
 # Importando as packages
 from __future__ import absolute_import
+from utils import feature_scaling
+from sklearn.preprocessing import PolynomialFeatures
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.svm import SVR
-from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error, mean_squared_log_error
+
 
 from sklearn.datasets import load_diabetes
 
@@ -26,33 +26,35 @@ df.data[0:5, ]
 X = df.data
 y = df.target
 
-# Dividindo o dataset em conjunto de treinamento e testes
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
-
-
 # Normalização das features
-# X_train = feature_scaling(X_train)
-# X_test = feature_scaling(X_test)
+X = feature_scaling(X)
 
-# Criando o dicionário contendo todos os regressores
-regressors = {'Linear Regression': LinearRegression(),
-              'Decision Tree Reg:': DecisionTreeRegressor(random_state = 0),
-              'SVR:': SVR(kernel = 'rbf')}
+# Treinando o modelo de Regressão Múltipla:
+regressor = LinearRegression()
+regressor.fit(X, y)
+
+# Transformando as features na 2ª ordem polinomial:
+poly_reg = PolynomialFeatures(degree = 2)
+X_poly = poly_reg.fit_transform(X)
+poly_reg.fit(X_poly, y)
+
+# Retreinando o modelo de Regressão Polinomial:
+lin_reg_poly = LinearRegression()
+lin_reg_poly.fit(X_poly, y)
 
 # Criando dataframe que irá guardar os resultados finais dos regressores
-df_results = pd.DataFrame(columns=['reg', 'rmse', 'rmse_log', 'r_2_score'])
+df_results = pd.DataFrame(columns=['Name','r_2_score', 'rmse'])
 
-# Iterando os regressores
-for name, reg in regressors.items():
-    
-    # Treinando os regressores com Conjunto de Treinamento
-    reg.fit(X_train, y_train)
-    
-    # Prevendo os resultados com o conjunto de testes
-    y_pred = reg.predict(X_test)
+# Inserindo as métricas de Regressão Múltipla e Regressão Polinomial no dataframe:
+# Regressão Múltipla
+y_pred = regressor.predict(X)
 
-    df_results.loc[len(df_results), :] = [name, reg.score(X_test, y_test), 
-               mean_squared_error(y_test, y_pred), mean_squared_log_error(y_test, y_pred)]
+df_results.loc[len(df_results), :] = ['Reg. Múltipla', regressor.score(X, y), mean_squared_error(y, y_pred)]
+
+#Regressão Polynomial
+y_pred = lin_reg_poly.predict(X_poly)
+
+df_results.loc[len(df_results), :] = ['Reg Polinomial', lin_reg_poly.score(X_poly, y), mean_squared_error(y, y_pred)]
 
 # Exibindo os resultados:
 df_results

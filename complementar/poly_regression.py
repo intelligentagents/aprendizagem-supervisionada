@@ -7,9 +7,8 @@ Created on Mon Nov 25 16:24:09 2019
 
 # Importando as packages
 from __future__ import absolute_import
+from utils import feature_scaling
 import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 
@@ -31,14 +30,11 @@ df.data[0:5, ]
 X = df.data
 y = df.target
 
-# Dividindo o dataset em conjunto de treinamento e testes
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
 
 # Normalização das features
-# X_train = feature_scaling(X_train)
-# X_test = feature_scaling(X_test)
+X = feature_scaling(X)
 
-# Treinando o modelo de regressão linear com o conjunto de treinamento
+# Treinando o modelo de regressão linear
 regressor = LinearRegression()
 regressor.fit(X, y)
 
@@ -47,14 +43,12 @@ poly_reg = PolynomialFeatures(degree = 2)
 X_poly = poly_reg.fit_transform(X)
 poly_reg.fit(X_poly, y)
 
-# Treinando o modelo de regressão polynomial com o conjunto de treinamento
+# Treinando o modelo de regressão polynomial
 lin_reg_poly = LinearRegression()
 lin_reg_poly.fit(X_poly, y)
 
 # Avaliando o modelo com a métrica r2
 lin_reg_poly.score(X_poly, y)
 
-# Prevendo os resultados com o conjunto de testes
+# Prevendo os resultados 
 y_pred = lin_reg_poly.predict(X_poly)
-
-y_pred
