@@ -6,12 +6,10 @@ Created on Mon Nov 25 16:25:43 2019
 """
 
 # Importando as packages
-from __future__ import absolute_import
 import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVR
-from utils import plot_results_reg, feature_scaling
+from utils import  feature_scaling
 
 
 # Importando o dataset do nosso estudo. O ojetivo é prever o consumo médio de carros através da coluna mpg (galões de combustível por milhas)
