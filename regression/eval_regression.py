@@ -6,41 +6,45 @@ Created on Sat Nov  2 22:04:07 2019
 
 # Importando as packages
 from __future__ import absolute_import
+from utils import feature_scaling
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.svm import SVR
-from sklearn.metrics import mean_squared_error, mean_squared_log_error
+from sklearn.metrics import mean_squared_error
+from sklearn.datasets import load_boston
 
 # Importando os dados
-df = pd.read_csv('data/pricing_houses.csv')
+# O dataset contém dados gerais e preços das casas de boston. O objetivo é predizer o valor das casas.
+boston = load_boston()
+
+#Transformando os dados em um dataframe
+df = pd.DataFrame(boston.data, columns = boston.feature_names)
+
+#Adicionando o valor do preço das casas (target) ao dataframe:
+df['PRICE'] = boston.target
 
 # Visualizando e descrevendo  o dataset
 df.info()
 
 df.head(5)
 
-# Selecionando apenas as features numericas
-df = df.select_dtypes(include=['int64', 'float64'])
-
 # Descrevendo o dataset:
 df.describe()
 
-# Preenchendo os valores númericos nulos (NA) com a mediana.
-df = df.fillna(df.median())
 
 # Definindo as variáveis indepedentes e dependentes
-X = df.iloc[:, :37].values
-y = df.iloc[:, -1].values.reshape(-1,1)
+X = df.iloc[:, :13].values
+y = df.iloc[:, -1].values
 
 # Dividindo o dataset em conjunto de treinamento e testes
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
 
 # Normalização das features
-# X_train = feature_scaling(X_train)
-# X_test = feature_scaling(X_test)
+X_train = feature_scaling(X_train)
+X_test = feature_scaling(X_test)
 
 # Criando o dicionário contendo todos os regressores
 regressors = {'Linear Regression': LinearRegression(),

@@ -22,6 +22,10 @@ df.describe()
 # Visualizando o dataset
 df.head(5)
 
+
+# Deletando coluna de id:    
+df = df.drop('id', axis=1)
+
 # Definindo as variáveis dependentes/independentes.
 X = df.iloc[:, :10].values
 y = df.iloc[:, -1].values

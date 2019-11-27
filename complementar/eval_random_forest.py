@@ -27,10 +27,10 @@ df.describe()
 # Visualizando o dataset
 df.head(5)
 
-# Deletando a coluna de localização:
+# Deletando coluna de localização:    
 df = df.drop('LOCATION_ID', axis=1)
 
-# Analisando se algumas colunas do atribuito horsepower contém valores nulos:
+# Analisando se existem valores nulos:
 df[df.isnull().values.any(axis=1)]
 
 # Preechendo os valores nulos com a mediana:
