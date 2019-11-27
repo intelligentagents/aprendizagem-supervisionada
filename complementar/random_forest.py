@@ -10,9 +10,10 @@ import pandas as pd
 from sklearn.model_selection import cross_validate
 from sklearn.ensemble import RandomForestClassifier
 
-# Importando os dados
-# Os dados são contém atributos de vidros. Portanto, o objetivo é classificar corretamente os tipos de vidros (Vidro de carro, Prédios, etc.) 
-df = pd.read_csv('data/glass.csv')
+# Esse conjunto de dados é composto por uma série de medidas biomédicas de 31 pacientes, sendo 23 com doença de Parkinson (DP). 
+# Cada coluna  é uma medida de voz específica e cada linha corresponde a uma das 195 gravações de voz desses indivíduos.
+# O principal objetivo dos dados é discriminar pessoas saudáveis daquelas com Parkinson de acordo com a coluna "status", que é definida como 0 para saudável e 1 para DP.
+df = pd.read_csv('data/parkinsons.csv')
 
 # Descrevendo o dataset
 df.describe()
@@ -20,9 +21,12 @@ df.describe()
 # Visualizando o dataset
 df.head(5)
 
+# Retirando o atributo nome do dataframe:
+df = df.drop(['name'], axis=1)
+
 # Definindo as variáveis dependentes/independentes.
-X = df.iloc[:, :10].values
-y = df.iloc[:, -1].values
+X = df[df.columns[~df.columns.isin(['status'])]].values
+y = df['status'].values.reshape(-1,1)
 
 # Definindo as métricas a serem utilizadas:
 metrics = ['accuracy', 'precision_macro', 'recall_macro', 'f1_macro']
