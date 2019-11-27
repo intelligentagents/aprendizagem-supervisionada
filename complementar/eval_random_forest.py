@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Nov  12 22:04:07 2019
+Created on Wed Nov 27 12:55:37 2019
 
+@author: Jairo Souza
 """
 
 # Importando os pacotes
@@ -11,19 +12,32 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
+from sklearn.ensemble import RandomForestClassifier
 
 # Importando os dados
-# Os dados são contém atributos de vidros. Portanto, o objetivo é classificar corretamente os tipos de vidros (Vidro de carro, Prédios, etc.) 
-df = pd.read_csv('data/glass.csv')
+# Os dados contém informações relacionadas a empresas indianas coletadas por auditores com o objetivo de construir um modelo para realizar tarefas 
+# de classificação de empresas suspeitas. Os atributos estão relacionados a métricas de auditorias como: scores, riscos, etc.
+df = pd.read_csv('data/audit_risk.csv')
 
 # Descrevendo o dataset
+df.info()
+
 df.describe()
 
 # Visualizando o dataset
 df.head(5)
 
+# Deletando a coluna de localização:
+df = df.drop('LOCATION_ID', axis=1)
+
+# Analisando se algumas colunas do atribuito horsepower contém valores nulos:
+df[df.isnull().values.any(axis=1)]
+
+# Preechendo os valores nulos com a mediana:
+df = df.fillna(df.median())
+
 # Definindo as variáveis dependentes/independentes.
-X = df.iloc[:, :10].values
+X = df.iloc[:, :17].values
 y = df.iloc[:, -1].values
 
 # Criando os subconjuntos de treinamento e testes
@@ -32,6 +46,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 # Criando o dicionário contendo todos os classificadores
 estimators = {'Decision Tree': DecisionTreeClassifier(criterion = 'entropy', random_state = 0),
               'KNN': KNeighborsClassifier(n_neighbors = 5, metric = 'minkowski', p = 2),
+              'Random Forest': RandomForestClassifier(n_estimators = 10, criterion = 'entropy', random_state = 0),
               'SVC': SVC(kernel = 'rbf', random_state = 0)}
 
 
@@ -56,4 +71,3 @@ for name, estim in estimators.items():
 
 # Exibindo os resultados finais
 df_results
-
