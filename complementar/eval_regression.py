@@ -56,7 +56,7 @@ regressors = {'Linear Regression': LinearRegression(),
 # Criando dataframe que irá guardar os resultados finais dos regressores
 df_results = pd.DataFrame(columns=['reg', 'r_2_score', 'rmse'])
 
-# Itereando os regressores
+# Percorrendo o dicionário e treinando e avaliando os modelos:
 for name, reg in regressors.items():
     
     # Treinando os regressores com Conjunto de Treinamento

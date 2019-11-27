@@ -40,7 +40,7 @@ estimators = {'Decision Tree': DecisionTreeClassifier(criterion = 'entropy', ran
 # Criando dataframe que irá guardar os resultados finais dos classificadores
 df_results = pd.DataFrame(columns=['clf', 'acc', 'prec', 'rec', 'f1'], index=None)
 
-# Itereando os classificadores
+# Percorrendo os classificadores
 for name, estim in estimators.items():
     
     # print("Treinando Estimador {0}: ".format(name))

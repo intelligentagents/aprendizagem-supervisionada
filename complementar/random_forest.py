@@ -21,7 +21,7 @@ df.describe()
 # Visualizando o dataset
 df.head(5)
 
-# Retirando o atributo nome do dataframe:
+# Retirando a coluna com o nome do dataframe:
 df = df.drop(['name'], axis=1)
 
 # Definindo as variáveis dependentes/independentes.
