@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Nov 25 16:25:43 2019
+Created on Mon Nov 23 16:25:43 2019
 
 @author: Jairo Souza
 """
@@ -44,7 +44,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 X_train = feature_scaling(X_train)
 X_test = feature_scaling(X_test)
 
-# Treinando o modelo de regressão linear com o conjunto de treinamento
+# Treinando o modelo de regressão com o conjunto de treinamento
 regressor = SVR(kernel = 'rbf')
 regressor.fit(X_train, y_train)
 

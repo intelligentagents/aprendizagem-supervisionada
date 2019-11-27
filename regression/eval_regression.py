@@ -49,7 +49,7 @@ regressors = {'Linear Regression': LinearRegression(),
               'SVR:': SVR(kernel = 'rbf')}
 
 # Criando dataframe que irá guardar os resultados finais dos regressores
-df_results = pd.DataFrame(columns=['reg', 'rmse', 'rmse_log', 'r_2_score'])
+df_results = pd.DataFrame(columns=['reg', 'r_2_score', 'rmse'])
 
 # Itereando os regressores
 for name, reg in regressors.items():
@@ -61,7 +61,7 @@ for name, reg in regressors.items():
     y_pred = reg.predict(X_test)
     
     df_results.loc[len(df_results), :] = [name, reg.score(X_test, y_test), 
-                   mean_squared_error(y_test, y_pred), mean_squared_log_error(y_test, y_pred)]
+                   mean_squared_error(y_test, y_pred)]
 
 # Exibindo os resultados:
 df_results
