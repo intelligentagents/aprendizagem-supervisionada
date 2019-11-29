@@ -51,7 +51,7 @@ def load_faces(directory):
 		faces.append(face)
 	return faces
 
-# Extrai uam face através de uma foto
+# Extrai uma face através de uma foto
 def extract_face(filename, required_size=(160, 160)):
 	# carrega imagem 
 	image = Image.open(filename)
@@ -119,15 +119,15 @@ def test_extract_faces(folder):
 
 def main ():
     
-    test_extract_faces('face_recognition\\data\\val\\ben_afflek\\')
+    test_extract_faces('face_recognition\\data\\val\\madonna\\')
     
     # Carregando todas as faces das celebridades presentes do driver:
     # conjunto de treinamento
-    X_train, y_train = load_dataset(os.path.join(os.getcwd(), 'face_recognition\\data\\train\\'))
+    X_train_faces, y_train_faces = load_dataset(os.path.join(os.getcwd(), 'face_recognition\\data\\train\\'))
     # conjunto de testes
-    X_test, y_test = load_dataset(os.path.join(os.getcwd(), 'face_recognition\\data\\val\\'))
+    X_test_faces, y_test_faces = load_dataset(os.path.join(os.getcwd(), 'face_recognition\\data\\val\\'))
     
-    print('Loaded: ', X_train.shape, y_train.shape, X_test.shape, y_test.shape)
+    print('Loaded: ', X_train_faces.shape, y_train_faces.shape, X_test_faces.shape, y_test_faces.shape)
        
     # Carregando o modelo keras *facenet* que contém um processo de *featurização* das faces:
     
@@ -137,61 +137,59 @@ def main ():
     print(model.inputs)
     print(model.outputs)
     
-    #Etapa de transformação das faces em features. No final temos 93 de treinamento e 25 imagens de validação contendo 128 features a respeito de 5 celebridades:
-    # Ben Afflek, Elton John, Madonna, Mindy Kaling e Jerry Seinfeld.
+    #Etapa de transformação das faces em features das duas celebridades:
     # etapa de featurização das faces usando o facenet
     
-    X_train_new = list()
-    for face_pixels in X_train:
+    X_train = list()
+    for face_pixels in X_train_faces:
     	embedding = get_embedding(model, face_pixels)
-    	X_train_new.append(embedding)
-    X_train_new = asarray(X_train_new)
-    print(X_train_new.shape)
+    	X_train.append(embedding)
+    X_train = asarray(X_train)
+    print(X_train.shape)
     # conversão de cada face no conjunto de testes 
-    X_test_new = list()
-    for face_pixels in X_test:
+    X_test = list()
+    for face_pixels in X_test_faces:
     	embedding = get_embedding(model, face_pixels)
-    	X_test_new.append(embedding)
-    X_test_new = asarray(X_test_new)
-    print(X_test_new.shape)
+    	X_test.append(embedding)
+    X_test = asarray(X_test)
+    print(X_test.shape)
     
     
     # Criando um Modelo SVM para classificar as imagens.
-    # Salvando as imagens
-    X_train_faces, y_train_faces, X_test_faces, y_test_faces  = X_train, y_train, X_test, y_test
-    
-    # carregando as imagens featurizadas:
-    X_train, X_test = X_train_new, X_test_new
-    
-    
-    # normalização dos input vectors
+    # Salvando as imagens em variáveis:
+    y_train, y_test  = y_train_faces, y_test_faces
+        
+    # Normalização dos input vectors
     in_encoder = Normalizer(norm='l2')
     X_train = in_encoder.transform(X_train)
     X_test = in_encoder.transform(X_test)
     
-    # codificação das labels: 
+    # Codificação das labels: 
     out_encoder = LabelEncoder()
     out_encoder.fit(y_train)
     y_train = out_encoder.transform(y_train)
     y_test = out_encoder.transform(y_test)
     
-    # treinamento do modelo
+    # Treinamento do modelo
     model = SVC(kernel='linear', probability=True)
     model.fit(X_train, y_train)
     
-    # teste do modelo em uma amostra randomica no conjunto de testes 
+    # Teste do modelo em uma amostra randomica no conjunto de testes 
     selection = choice([i for i in range(X_test.shape[0])])
+    # Retornando a face em pixes para visualização
     random_face_pixels = X_test_faces[selection]
+    # Retornando a face com as features
     random_face_emb = X_test[selection]
+    # Retornando a classe (atriz):
     random_face_class = y_test[selection]
     random_face_name = out_encoder.inverse_transform([random_face_class])
     
-    # Realizando a predição de uma face
+    # Realizando a predição de uma face e prevendo a probabilidade
     samples = expand_dims(random_face_emb, axis=0)
     yhat_class = model.predict(samples)
     yhat_prob = model.predict_proba(samples)
     
-    # Retornando o nome da face
+    # Retornando o Nome da face
     class_index = yhat_class[0]
     class_probability = yhat_prob[0,class_index] * 100
     predict_names = out_encoder.inverse_transform(yhat_class)
