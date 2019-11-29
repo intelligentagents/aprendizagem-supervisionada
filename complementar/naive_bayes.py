@@ -28,13 +28,13 @@ df.info()
 # Visualizando o dataset
 df.head(5)
 
-# Criando o  labelEncoder
+# Criando o labelEncoder
 le = preprocessing.LabelEncoder()
 
 # Trnasformando os dados categóriocs em numericos:
 df['wheather'] = le.fit_transform(df['wheather'])
 
-# Similarmente, transofrmando as outras coluans categóricas em numericas:
+# Similarmente, transformando as outras coluans categóricas em numericas:
 df['temp'] = le.fit_transform(df['temp'])
 df['play'] = le.fit_transform(df['play'])
 
@@ -60,10 +60,10 @@ print("Valor a ser previsto:", predicted)
 # Carregando dataset que consistem em uma base de dados contendo atributos químicos de vinhos .
 wine = datasets.load_wine()
 
-# visualizando o nome das features:
+# Visualizando o nome das features:
 print ("Features: ", wine.feature_names)
 
-# visualizando os labels (tipos de vinhos)
+# Visualizando os labels (tipos de vinhos)
 print ("Labels: ", wine.target_names)
 
 # Visualizando a formato dos dados:
