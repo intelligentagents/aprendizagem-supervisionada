@@ -31,15 +31,15 @@ df.head(5)
 # Criando o labelEncoder
 le = preprocessing.LabelEncoder()
 
-# Trnasformando os dados categóriocs em numericos:
+# Transformando os dados categóricos em numericos:
 df['wheather'] = le.fit_transform(df['wheather'])
 
-# Similarmente, transformando as outras coluans categóricas em numericas:
+# Similarmente, transformando as outras colunas categóricas em numericas:
 df['temp'] = le.fit_transform(df['temp'])
 df['play'] = le.fit_transform(df['play'])
 
 #Combinando as features (wheather e temp) em uma unica variável:
-# df['weather_temp'] = zip(df['weather'].values, df['temp'].values)
+#df['weather_temp'] = zip(df['weather'].values, df['temp'].values)
 
 #Definindo as variáveis dependentes/independentes:
 
@@ -57,7 +57,7 @@ print("Valor a ser previsto:", predicted)
 
 
 # Naive Bayes com labels multiplos
-# Carregando dataset que consistem em uma base de dados contendo atributos químicos de vinhos .
+# Carregando dataset que consistem em uma base de dados contendo atributos químicos de vinhos:
 wine = datasets.load_wine()
 
 # Visualizando o nome das features:
