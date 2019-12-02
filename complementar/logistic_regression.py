@@ -8,7 +8,6 @@ Created on Mon Dec  2 11:08:59 2019
 
 # Importando os pacotes
 from __future__ import absolute_import
-from utils import feature_scaling
 import pandas as pd
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import f1_score, recall_score, accuracy_score, precision_score
@@ -19,9 +18,6 @@ from sklearn.preprocessing import LabelEncoder
 # Importando os dados
 # O objetivo é determinar se uma pessoa ganhar mais de 50k por ano.
 df = pd.read_csv('data/adult.csv')
-
-# Selecionando uma amostragem dos dados para melhor visualização
-df = df.sample(n=100, random_state=0)
 
 # Visualizando o dataset
 df.head(5)
@@ -47,9 +43,6 @@ y = df.iloc[:, -1].values
 # Criando os subconjuntos de treinamento e testes
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
 
-# Normalizando as features 
-X_train = feature_scaling(X_train)
-X_test = feature_scaling(X_test)
 
 # Treinando o modelo de Regressão Logistica com o Conjunto de Treinamento
 classifier = LogisticRegression(random_state = 0)
