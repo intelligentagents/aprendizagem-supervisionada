@@ -1,1 +1,1 @@
-### Curso de Aprendizagem Supervisionada
+### Supervised Machine Learning Course
