@@ -11,6 +11,7 @@ import re
 import pandas as pd
 import seaborn as sns
 import numpy as np
+import os
 from bs4 import BeautifulSoup
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
@@ -20,6 +21,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.externals import joblib
 
+#Definindo o Path:
+PATH = '/home/r4ph/desenv/projetos/aprendizagem-supervisionada/ml-apps/models_generator'
+
+# Função que salva o modelo no disco:
+def save_model(model, model_name = 'classifier_movies.joblib'):
+    joblib.dump(model, os.path.join(PATH, model_name))
+
+# Função que importa o modelo:
+def import_model(model_name):
+    return joblib.load(os.path.join(PATH, model_name))
 
 # Funções Auxiliares:
 # Removendo as tags htmls:
@@ -45,8 +56,8 @@ def denoise_text(text):
     text = remove_special_characters(text)
     return text
 
-# Importanto os dados
-# Fonte: https://github.com/minerandodados/mdrepo
+# Importanto os dados relacionados a classificação de sentimentos em revisão de filmes.
+# Fonte: https://www.kaggle.com/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews
 df = pd.read_csv('data/imdb_dataset.csv', encoding ='utf-8')
 
 df.head(5)
@@ -90,10 +101,10 @@ y_pred = model.predict(X_test)
 print(metrics.classification_report(y_test,y_pred,target_names=['Positive','Negative']))
 
 # Salva o modelo:
-joblib.dump(model, 'classifier_movies.joblib')
+save_model(model)
 
 # Salva o Vetorizador:
-joblib.dump(vectorizer, 'count_vectorizer.joblib')
+imp_model = import_model('classifier_movies.joblib')
 
 # Classificando um exemplo:
 example = ['Titanic is one bad movie']
@@ -103,5 +114,5 @@ _X = vectorizer.transform(example)
 label = {0:'negative', 1:'positive'}
 
 print('Prediction: %s\nProbability: %.2f%%' %\
-      (label[model.predict(_X)[0]], 
-       np.max(model.predict_proba(_X))*100))
+      (label[imp_model.predict(_X)[0]], 
+       np.max(imp_model.predict_proba(_X))*100))
