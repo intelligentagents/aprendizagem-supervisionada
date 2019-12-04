@@ -1,6 +1,14 @@
 ## ML-React-App
 It's a template on which we can build a React App and Call Endpoints to Make Predictions.
 
+## Build images and run containers with docker-compose
+
+After cloning the repository go inside the project folder:
+
+```sh
+cd iris-classifier-flask-react
+```
+Run ```sh docker-compose up``` which will start a Flask web application for the backend API (default port 5000) and an React frontend web server (default port 3000).
 
 ## Build the Backend (Service)
 Move inside the service folder and run the Flask app:

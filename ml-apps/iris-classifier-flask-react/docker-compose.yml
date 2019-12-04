@@ -1,0 +1,27 @@
+version: "3.2"
+services:
+
+  service:
+    environment:
+      - FLASK_ENV=development
+    build: ./service
+    volumes:
+      - ./service:/app/service
+    ports:
+      - "5000:5000"
+    command: flask run --host=0.0.0.0
+
+
+  ui:
+    build: ./ui
+    volumes:
+      - ./ui:/app
+      # One-way volume to use node_modules from inside image
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - service
+    command: npm start
