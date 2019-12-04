@@ -1,20 +1,18 @@
 ## ML-React-App
 It's a template on which we can build a React App and Call Endpoints to Make Predictions.
 
-
-## Installing Docker on Windows and Mac
-
-Folow the instructions on official documentation to install Docker Desktop: https://docs.docker.com/install/
-
-## Installing Docker on Linux
-
-Folow the instructions to Get Docker Engine Community for Ubuntu: https://docs.docker.com/install/linux/docker-ce/ubuntu/ 
-
-## Installing Docker Composer
-
-Folow the instructions on docs: https://docs.docker.com/compose/install/
-
 ## Build images and run containers with docker-compose
+
+First, install the docker and compose to build the images:
+
+**Installing Docker on Windows and Mac:**
+Follow the instructions on official documentation to install Docker Desktop: https://docs.docker.com/install/
+
+**Installing Docker on Linux:**
+Follow the instructions to Get Docker Engine Community for Ubuntu: https://docs.docker.com/install/linux/docker-ce/ubuntu/ 
+
+**Installing Docker Composer:**
+Follow the instructions on docs: https://docs.docker.com/compose/install/
 
 After cloning the repository go into the project folder:
 
