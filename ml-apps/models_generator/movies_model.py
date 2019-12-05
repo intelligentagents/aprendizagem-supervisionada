@@ -25,7 +25,7 @@ from sklearn.externals import joblib
 PATH = '/home/r4ph/desenv/projetos/aprendizagem-supervisionada/ml-apps/models_generator'
 
 # Função que salva o modelo no disco:
-def save_model(model, model_name = 'classifier_movies.joblib'):
+def save_model(model, model_name):
     joblib.dump(model, os.path.join(PATH, model_name))
 
 # Função que importa o modelo:
@@ -101,14 +101,18 @@ y_pred = model.predict(X_test)
 print(metrics.classification_report(y_test,y_pred,target_names=['Positive','Negative']))
 
 # Salva o modelo:
-save_model(model)
+save_model(model, 'classifier_movies.joblib')
 
-# Salva o Vetorizador:
+# Salva a matriz contendo os tokens:
+save_model(vectorizer, 'count_vectorizer.joblib' )
+
+# Importa o modelo e a matriz de tokens:
 imp_model = import_model('classifier_movies.joblib')
+imp_vecto = import_model('count_vectorizer.joblib')
 
 # Classificando um exemplo:
 example = ['Titanic is one bad movie']
-_X = vectorizer.transform(example)
+_X = imp_vecto.transform(example)
 
 # Visualizando os resusltados do exemplo:
 label = {0:'negative', 1:'positive'}
