@@ -3,7 +3,6 @@
 Created on Sat Nov  2 22:04:07 2019
 
 """
-
 # Importando os pacotes
 import pandas as pd
 from sklearn.metrics import confusion_matrix

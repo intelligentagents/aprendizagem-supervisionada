@@ -9,6 +9,9 @@ Created on Tue Nov 26 22:37:56 2019
 import pandas as pd
 from sklearn.model_selection import cross_validate
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import make_pipeline
 
 # Esse conjunto de dados é composto por uma série de medidas biomédicas de 31 pacientes, sendo 23 com doença de Parkinson (DP). 
 # Cada coluna  é uma medida de voz específica e cada linha corresponde a uma das 195 gravações de voz desses indivíduos.
@@ -24,19 +27,24 @@ df.head(5)
 # Retirando a coluna com o nome do dataframe:
 df = df.drop(['name'], axis=1)
 
+# Verificando os tipos das colunas:
+df.info()
+
 # Definindo as variáveis dependentes/independentes.
 X = df[df.columns[~df.columns.isin(['status'])]].values
 y = df['status'].values.reshape(-1,1)
 
-# Definindo as métricas a serem utilizadas:
-metrics = ['accuracy', 'precision_macro', 'recall_macro', 'f1_macro']
+# Criando uma pipeline com o preprocessador e o classificador:
+# Passos: 1- Insere a média dos valores numericos que estão faltando; 2- Normaliza dos dados númericos;
+model = make_pipeline(SimpleImputer(strategy='median', fill_value='missing'),
+                      StandardScaler(),
+                      RandomForestClassifier(criterion = 'entropy', random_state = 0, n_estimators = 10))
 
-# Treinando o modelo de Classificação usando a validação cruzada com 10 folds:
-classifier = RandomForestClassifier(criterion = 'entropy', random_state = 0, n_estimators = 10)
-scores = cross_validate(classifier, X, y, cv=10, scoring=metrics)
+#Mostrando os passos:
+model.steps
 
-# Visualizando os resultados finais:
-pd.DataFrame.from_dict(scores)
+# Treinando classificador com a validação cruzada
+results = cross_validate(model, X, y, cv=5, scoring=['accuracy', 'precision_macro', 'recall_macro', 'f1_macro'])
 
-# Exibindo os valores da media das métricas:
-pd.DataFrame.from_dict(scores).mean()
+# Visualizando os resultados 
+pd.DataFrame.from_dict(results).mean()

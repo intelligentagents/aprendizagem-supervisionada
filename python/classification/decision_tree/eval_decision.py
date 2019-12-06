@@ -14,7 +14,7 @@ from sklearn.svm import SVC
 
 # Importando os dados
 # Os dados são contém atributos de vidros. Portanto, o objetivo é classificar corretamente os tipos de vidros (Vidro de carro, Prédios, etc.) 
-df = pd.read_csv('data/glass.csv')
+df = pd.read_csv('../data/glass.csv')
 
 # Descrevendo o dataset
 df.describe()

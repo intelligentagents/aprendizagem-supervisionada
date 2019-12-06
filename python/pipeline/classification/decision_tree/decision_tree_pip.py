@@ -8,8 +8,7 @@ Created on Thu Dec  5 17:50:14 2019
 
 # Importando os pacotes
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
+from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import cross_validate
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import KFold
@@ -30,36 +29,28 @@ df.describe()
 # Visualizando o dataset
 df.head(5)
 
-
 # Definindo as variáveis dependentes/independentes.
 X = df.iloc[:, :10].values
 y = df.iloc[:, -1].values
 
-# Dividindo o conjunto de treinamento e testes:
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Gerando o pipeline de maneira mais simplificada:
+# 1- Retira a primeira coluna; 
+drop_column = FunctionTransformer(all_but_first_column, validate = False)
+    
+# 2- Completando os valores que faltam com a média: 
+imputer = SimpleImputer(strategy='mean')
 
-# Criando o modelo usando pipeline:
-# Etapas: 1- Retira a primeira coluna; 2- completa os valores que faltam com a média ; 3- Cria o modelo
-model = Pipeline(steps=[
-    ('drop id column', FunctionTransformer(all_but_first_column, validate = False)),
-    ('imputer', SimpleImputer(strategy='mean')),
-    ('tree', DecisionTreeClassifier(max_depth=3, random_state=0))
-])
+# 3- Criando o modelo de classificação
+clf = DecisionTreeClassifier(criterion = 'entropy', random_state = 0)
 
-#Definindo as métricas a serem utilizadas:
-metrics = ['accuracy', 'precision_macro', 'recall_macro', 'f1_macro']
+# Criando a pipeline
+pipe = make_pipeline(drop_column,imputer,clf)
 
 # Definindo a validação cruzada com 5 folds:
 kfold = KFold(n_splits=5, shuffle=True, random_state=42)
 
 # Treinando classificador com a validação cruzada
-results = cross_validate(model, X, y, cv=kfold, scoring=metrics)
+results = cross_validate(pipe, X, y, cv=kfold, scoring=['accuracy', 'precision_macro', 'recall_macro', 'f1_macro'])
 
-# Visualizando das métricas
-print("Average accuracy (std): %f (%f)" %(results['test_accuracy'].mean(), results['test_accuracy'].std()))
-
-# # Visualizando das métricas por iteração:
-pd.DataFrame.from_dict(results)
-
-# Visualizando das métricas pela média
+# Visualizando os resultados 
 pd.DataFrame.from_dict(results).mean()
