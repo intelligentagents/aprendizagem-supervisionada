@@ -2,7 +2,7 @@ Werkzeug==0.16.0
 Flask==1.0.2
 Flask-Cors==3.0.7
 flask-restplus==0.12.1
-numpy==1.16.2
+numpy==1.22.0
 scikit-learn==0.20.3
 bs4==0.0.1
 regex==2019.11.1
